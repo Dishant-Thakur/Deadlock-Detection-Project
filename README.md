@@ -1,0 +1,1 @@
+In a multiprogramming environment, several processes compete for limited resources such as memory, I/O devices and CPU cycles. If resource allocation is not managed carefully, the system can enter a state where a set of processes are permanently blocked, each waiting for a resource held by another process in the set. This situation is called a deadlock.
