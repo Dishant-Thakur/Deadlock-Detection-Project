@@ -1,0 +1,255 @@
+/* ========================================================================= */
+/*  GLOBAL FONT IMPORTS  */
+/* ========================================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Poppins:wght@400;500;600&display=swap');
+
+/* ========================================================================= */
+/*  GLOBAL STYLES + PAGE SLIDE ANIMATIONS */
+/* ========================================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #e5e7eb;
+    background: linear-gradient(135deg, #0a0f1f, #020617 60%, #0f172a);
+    overflow-x: hidden;
+    
+    /* Slide-in animation */
+    opacity: 0;
+    transform: translateX(40px);
+    animation: pageSlideIn 0.6s ease-out forwards;
+}
+
+@keyframes pageSlideIn {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+body.slide-out-left {
+    animation: slideOut 0.4s ease-in forwards;
+}
+@keyframes slideOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-40px); }
+}
+
+/* ========================================================================= */
+/* NAVBAR */
+/* ========================================================================= */
+
+.navbar {
+    width: 100%;
+    padding: 15px 0;
+    background: rgba(10, 15, 30, 0.9);
+    border-bottom: 1px solid rgba(56,189,248,0.2);
+    backdrop-filter: blur(12px);
+}
+
+.nav-inner {
+    max-width: 1150px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.nav-brand {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.text-accent {
+    color: #38bdf8;
+}
+
+.nav-links {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 8px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-neon {
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    color: #020617;
+    box-shadow: 0 0 12px rgba(56,189,248,0.5);
+}
+
+.btn-neon:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 0 22px rgba(56,189,248,0.9);
+}
+
+.btn-outline {
+    border: 1px solid rgba(56,189,248,0.6);
+    color: #e5e7eb;
+    background: transparent;
+}
+
+.btn-outline:hover {
+    background: rgba(56,189,248,0.15);
+}
+
+/* ========================================================================= */
+/* LAYOUT CONTAINERS */
+/* ========================================================================= */
+
+.main-container {
+    max-width: 1150px;
+    margin: auto;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.glass-card {
+    background: rgba(15, 23, 42, 0.70);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.55);
+    transition: 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+}
+
+/* ========================================================================= */
+/* TITLES */
+/* ========================================================================= */
+
+.title-main {
+    font-family: "Poppins", sans-serif;
+    font-size: 2.1rem;
+    font-weight: 600;
+}
+
+.title-sub {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #9ca3af;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* ========================================================================= */
+/* INPUT FIX (IMPORTANT) */
+/* ========================================================================= */
+
+.table-matrix input {
+    width: 70px;
+    padding: 6px 8px;
+    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid rgba(148,163,184,0.6);
+    color: #e5e7eb;
+    font-size: 0.92rem;
+}
+
+.table-matrix input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56,189,248,0.7);
+}
+
+/* MAKE SURE INPUTS ARE CLICKABLE */
+.glass-card * {
+    pointer-events: auto !important;
+}
+
+/* ========================================================================= */
+/* MATRIX TABLE STYLES */
+/* ========================================================================= */
+
+.table-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.table-matrix th {
+    background: rgba(15, 23, 42, 0.9);
+    padding: 6px;
+}
+
+.table-matrix td {
+    padding: 6px;
+}
+
+.matrix-wrapper {
+    border: 1px solid rgba(59,130,246,0.4);
+    border-radius: 12px;
+    padding: 10px;
+    background: rgba(17,25,40,0.65);
+}
+
+/* DEADLOCK COLORING */
+.highlight-deadlocked {
+    background: rgba(248, 113, 113, 0.22) !important;
+}
+.highlight-safe {
+    background: rgba(34, 197, 94, 0.22) !important;
+}
+
+
+.log-box, .rag-box {
+    height: 200px;
+    overflow-y: auto;
+    padding: 12px;
+    background: rgba(15,23,42,0.80);
+    border: 1px solid rgba(75,85,99,0.55);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-family: "JetBrains Mono", monospace;
+}
+
+/* ========================================================================= */
+/* CHART CONTAINER */
+/* ========================================================================= */
+
+.chart-container {
+    height: 260px;
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(15,23,42,0.85);
+    border: 1px solid rgba(56,189,248,0.3);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.8);
+}
+
+/* ========================================================================= */
+/* FOOTER */
+/* ========================================================================= */
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #8b97a8;
+    font-size: 0.85rem;
+}

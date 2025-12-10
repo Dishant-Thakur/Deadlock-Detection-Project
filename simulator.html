@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deadlock Simulator | DeadlockLab</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function go(url){
+            document.body.classList.add("slide-out-left");
+            setTimeout(()=>window.location.href=url,300);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-brand">
+            <span class="text-accent">●</span> DeadlockLab
+        </div>
+
+        <div class="nav-links">
+            <button class="btn btn-outline" onclick="go('index.html')">Home</button>
+            <button class="btn btn-neon">Simulator</button>
+            <button class="btn btn-outline" onclick="go('report.html')">Report</button>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+
+    <h1 class="title-main">Deadlock Detection Simulator</h1>
+    <p>Configure processes & resources, load scenarios, and run the deadlock detection algorithm.</p>
+
+
+    <div class="glass-card">
+        <h2 class="title-sub">Load Scenario</h2>
+
+        <div style="display:flex; gap:15px;">
+            <select id="scenarioSelect" class="btn btn-outline" style="padding:10px 20px;">
+                <option value="custom">Custom scenario</option>
+                <option value="safe">Safe State Scenario</option>
+                <option value="dead1">Deadlock Scenario 1</option>
+                <option value="dead2">Deadlock Scenario 2</option>
+                <option value="random">Random Scenario</option>
+            </select>
+
+            <button class="btn btn-neon" onclick="loadScenario()">Load</button>
+        </div>
+    </div>
+
+
+    <div class="section" style="display:flex; gap:25px; flex-wrap:wrap;">
+
+     
+        <div class="glass-card" style="flex:1; min-width:260px;">
+            <h2 class="title-sub">Configuration</h2>
+
+            <label>Number of Processes</label>
+            <input id="numProc" type="number" class="table-matrix input" value="3">
+
+            <label style="margin-top:10px;">Number of Resource Types</label>
+            <input id="numRes" type="number" class="table-matrix input" value="3">
+
+            <button class="btn btn-neon" style="margin-top:15px;" onclick="generateMatrices()">
+                Generate Matrices
+            </button>
+        </div>
+
+    
+        <div style="flex:2; display:flex; flex-direction:column; gap:25px;">
+
+            <div class="glass-card">
+                <h2 class="title-sub">Allocation Matrix</h2>
+                <div class="matrix-wrapper">
+                    <table id="allocTable" class="table-matrix"></table>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <h2 class="title-sub">Request Matrix</h2>
+                <div class="matrix-wrapper">
+                    <table id="reqTable" class="table-matrix"></table>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <h2 class="title-sub">Available Vector</h2>
+                <div class="matrix-wrapper">
+                    <table id="availTable" class="table-matrix"></table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section" style="display:flex; gap:20px; flex-wrap:wrap;">
+
+        <div class="glass-card" style="flex:1;">
+            <h2 class="title-sub">Actions</h2>
+            <button class="btn btn-neon" onclick="detectDeadlock()">Detect Deadlock</button>
+            <button class="btn btn-outline" onclick="logBox.innerHTML=''">Clear Logs</button>
+
+            <h3 class="title-sub" style="margin-top:20px;">Summary</h3>
+            <div id="summary"></div>
+            <div id="deadList"></div>
+        </div>
+
+        <div class="glass-card" style="flex:1;">
+            <h2 class="title-sub">Algorithm Trace</h2>
+            <div id="logBox" class="log-box"></div>
+        </div>
+
+        <div class="glass-card" style="flex:1;">
+            <h2 class="title-sub">RAG (Textual View)</h2>
+            <div id="ragBox" class="rag-box"></div>
+        </div>
+
+    </div>
+
+    <div class="glass-card">
+        <h2 class="title-sub">CPU Load Visualization</h2>
+
+        <div class="chart-container">
+            <canvas id="cpuChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script src="simulator.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DeadlockLab | OS Deadlock Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function go(url){
+            document.body.classList.add("slide-out-left");
+            setTimeout(()=>window.location.href=url,300);
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <span class="text-accent">●</span> DeadlockLab
+            </div>
+
+            <div class="nav-links">
+                <button class="btn btn-outline" onclick="go('index.html')">Home</button>
+                <button class="btn btn-outline" onclick="go('simulator.html')">Simulator</button>
+                <button class="btn btn-neon" onclick="go('report.html')">Report</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <h1 class="title-main">Visual Deadlock Detection for Operating Systems</h1>
+        <p style="max-width:700px;">
+            DeadlockLab is a web-based OS simulator that lets you model processes, simulate deadlocks,
+            visualize CPU load, analyze RAG graphs, and generate a full project report.
+        </p>
+
+        <div class="section">
+            <button class="btn btn-neon" onclick="go('simulator.html')">Launch Simulator</button>
+            <button class="btn btn-outline" onclick="go('report.html')">View Full Report</button>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="title-sub">Tech Stack</h2>
+            <ul>
+                <li>HTML5 + CSS3 (Dark Neon Theme, Flexbox Layout)</li>
+                <li>JavaScript (Banker’s Algorithm, UI Logic)</li>
+                <li>Chart.js (CPU Bar Chart Visualization)</li>
+                <li>SVG diagrams (Deadlock concepts)</li>
+            </ul>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="title-sub">Core Features</h2>
+            <ul>
+                <li>Deadlock Detection with Req/Alloc matrices</li>
+                <li>CPU Load Visualization</li>
+                <li>Automatic Scenarios (Safe, Deadlocked, Random)</li>
+                <li>Animated slide transitions between pages</li>
+            </ul>
+        </div>
+
+        <div class="footer">© DeadlockLab — Operating System Project Simulator</div>
+    </div>
+
+</body>
+</html>

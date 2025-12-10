@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DeadlockLab Project Report</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function go(url){
+            document.body.classList.add("slide-out-left");
+            setTimeout(()=>window.location.href=url,300);
+        }
+    </script>
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-brand">
+            <span class="text-accent">●</span> DeadlockLab
+        </div>
+
+        <div class="nav-links">
+            <button class="btn btn-outline" onclick="go('index.html')">Home</button>
+            <button class="btn btn-outline" onclick="go('simulator.html')">Simulator</button>
+            <button class="btn btn-neon">Report</button>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+
+    <!-- TITLE / ABSTRACT -->
+    <div class="glass-card">
+        <h1 class="title-main">Automated Deadlock Detection Tool – DeadlockLab</h1>
+        <p>
+            This report describes the design and implementation of <b>DeadlockLab</b>,
+            a web-based Operating System project that detects deadlocks using a
+            Banker-style algorithm and visualizes CPU load with interactive charts.
+            The tool is implemented entirely in HTML, CSS3 and JavaScript.
+        </p>
+    </div>
+
+    <!-- CHAPTER 1 -->
+    <div class="glass-card">
+        <h2 class="title-sub">Chapter 1 – Introduction</h2>
+        <p>
+            In a multiprogramming environment, several processes compete for limited
+            resources such as memory, I/O devices and CPU cycles. If resource
+            allocation is not managed carefully, the system can enter a state where
+            a set of processes are permanently blocked, each waiting for a resource
+            held by another process in the set. This situation is called a
+            <b>deadlock</b>.
+        </p>
+        <p>
+            The objective of this project is to build an <b>Automated Deadlock
+            Detection Tool</b> that:
+        </p>
+        <ul>
+            <li>Accepts Allocation, Request and Available matrices as input.</li>
+            <li>Runs a Banker-style deadlock detection algorithm.</li>
+            <li>Highlights deadlocked processes and safe processes.</li>
+            <li>Visualizes per-process CPU load using a bar chart.</li>
+        </ul>
+    </div>
+
+    <!-- CHAPTER 2 -->
+    <div class="glass-card">
+        <h2 class="title-sub">Chapter 2 – Theoretical Background</h2>
+        <p><b>2.1 Deadlock definition</b></p>
+        <p>
+            A deadlock is a state in which a set of processes are blocked because
+            each process is holding at least one resource and requesting another
+            resource that is currently held by another process in the same set.
+        </p>
+
+        <p><b>2.2 Necessary Conditions</b></p>
+        <ul>
+            <li><b>Mutual Exclusion</b> – at least one non-shareable resource.</li>
+            <li><b>Hold and Wait</b> – processes hold resources while waiting.</li>
+            <li><b>No Preemption</b> – resources cannot be forcibly taken.</li>
+            <li><b>Circular Wait</b> – there exists a circular chain of processes, each waiting for a resource held by the next.</li>
+        </ul>
+        <p>
+            DeadlockLab focuses on identifying <b>circular wait</b> using available
+            resource information.
+        </p>
+    </div>
+
+    <!-- SVG: RAG DIAGRAM -->
+    <div class="glass-card">
+        <h2 class="title-sub">Resource Allocation Graph (RAG) Diagram</h2>
+        <p>
+            The Resource Allocation Graph represents processes as circles and
+            resources as squares. A cycle in this graph may indicate a deadlock.
+        </p>
+        <div class="chart-container" style="height:230px;">
+            <svg width="100%" height="210" viewBox="0 0 420 210">
+                <!-- Processes -->
+                <circle cx="80" cy="60" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
+                <text x="80" y="65" text-anchor="middle" fill="#e5e7eb" font-size="12">P0</text>
+
+                <circle cx="330" cy="60" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
+                <text x="330" y="65" text-anchor="middle" fill="#e5e7eb" font-size="12">P1</text>
+
+                <!-- Resources -->
+                <rect x="190" y="35" width="30" height="30" rx="6"
+                      fill="#0f172a" stroke="#facc15" stroke-width="2" />
+                <text x="205" y="54" text-anchor="middle" fill="#e5e7eb" font-size="11">R0</text>
+
+                <rect x="190" y="120" width="30" height="30" rx="6"
+                      fill="#0f172a" stroke="#facc15" stroke-width="2" />
+                <text x="205" y="139" text-anchor="middle" fill="#e5e7eb" font-size="11">R1</text>
+
+                <!-- Edges P0 -> R0 (request) -->
+                <defs>
+                    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="5" refY="3"
+                            orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#38bdf8" />
+                    </marker>
+                    <marker id="arrowYellow" markerWidth="8" markerHeight="8" refX="5" refY="3"
+                            orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#facc15" />
+                    </marker>
+                    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="5" refY="3"
+                            orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#f97316" />
+                    </marker>
+                </defs>
+
+                <line x1="98" y1="60" x2="190" y2="50"
+                      stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)" />
+
+                <!-- R0 -> P1 (allocated) -->
+                <line x1="220" y1="50" x2="312" y2="60"
+                      stroke="#facc15" stroke-width="1.5" marker-end="url(#arrowYellow)" />
+
+                <!-- P1 -> R1 (request) -->
+                <line x1="330" y1="78" x2="220" y2="120"
+                      stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)" />
+
+                <!-- R1 -> P0 (allocated) -->
+                <line x1="190" y1="135" x2="80"  y2="78"
+                      stroke="#f97316" stroke-width="1.5" marker-end="url(#arrowRed)" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- CHAPTER 3 -->
+    <div class="glass-card">
+        <h2 class="title-sub">Chapter 3 – Deadlock Detection Algorithm</h2>
+        <p>
+            DeadlockLab uses a Banker-style detection algorithm based on three
+            main data structures:
+        </p>
+        <ul>
+            <li><b>Allocation[n][m]</b> – currently allocated instances of each resource.</li>
+            <li><b>Request[n][m]</b> – additional resource instances each process still needs.</li>
+            <li><b>Available[m]</b> – currently available instances of each resource type.</li>
+        </ul>
+        <p><b>Algorithm Steps:</b></p>
+        <ol>
+            <li>Work = Available; Finish[i] = false for all i.</li>
+            <li>Find a process <i>Pi</i> such that Finish[i] = false and Request[i] ≤ Work.</li>
+            <li>If such a process exists: set Work = Work + Allocation[i]; set Finish[i] = true; repeat step 2.</li>
+            <li>If no such process exists and some Finish[i] = false, those processes are in deadlock.</li>
+        </ol>
+    </div>
+
+    <!-- SVG FLOWCHART -->
+    <div class="glass-card">
+        <h2 class="title-sub">Algorithm Flow Diagram</h2>
+        <div class="chart-container" style="height:260px;">
+            <svg width="100%" height="240" viewBox="0 0 430 240">
+                <!-- Start -->
+                <rect x="165" y="10" width="100" height="30" rx="8"
+                      fill="#0f172a" stroke="#22c55e" stroke-width="1.5" />
+                <text x="215" y="30" text-anchor="middle" fill="#e5e7eb" font-size="11">Start</text>
+
+                <!-- Init -->
+                <rect x="90" y="55" width="250" height="40" rx="8"
+                      fill="#0f172a" stroke="#38bdf8" stroke-width="1.5" />
+                <text x="215" y="78" text-anchor="middle" fill="#e5e7eb" font-size="11">
+                    Work = Available, Finish[i] = false
+                </text>
+
+                <!-- Condition diamond -->
+                <polygon points="215,115 275,145 215,175 155,145"
+                         fill="#0f172a" stroke="#facc15" stroke-width="1.5" />
+                <text x="215" y="140" text-anchor="middle" fill="#e5e7eb" font-size="10">
+                    Exists i with
+                </text>
+                <text x="215" y="152" text-anchor="middle" fill="#e5e7eb" font-size="10">
+                    Finish[i]=false &amp; Req[i]≤Work?
+                </text>
+
+                <!-- Update Work -->
+                <rect x="20" y="185" width="185" height="35" rx="8"
+                      fill="#0f172a" stroke="#38bdf8" stroke-width="1.5" />
+                <text x="112" y="206" text-anchor="middle" fill="#e5e7eb" font-size="10">
+                    Work = Work + Allocation[i];
+                </text>
+                <text x="112" y="218" text-anchor="middle" fill="#e5e7eb" font-size="10">
+                    Finish[i] = true
+                </text>
+
+                <!-- Deadlock box -->
+                <rect x="260" y="185" width="150" height="35" rx="8"
+                      fill="#0f172a" stroke="#f97316" stroke-width="1.5" />
+                <text x="335" y="205" text-anchor="middle" fill="#e5e7eb" font-size="10">
+                    Some Finish[i] = false → Deadlock
+                </text>
+
+                <!-- Arrows -->
+                <defs>
+                    <marker id="arrowWhite" markerWidth="8" markerHeight="8" refX="5" refY="3"
+                            orient="auto">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#e5e7eb" />
+                    </marker>
+                </defs>
+
+                <line x1="215" y1="40" x2="215" y2="55"
+                      stroke="#e5e7eb" stroke-width="1.2" marker-end="url(#arrowWhite)"/>
+                <line x1="215" y1="95" x2="215" y2="115"
+                      stroke="#e5e7eb" stroke-width="1.2" marker-end="url(#arrowWhite)"/>
+
+                <!-- Yes -->
+                <line x1="155" y1="145" x2="112" y2="145"
+                      stroke="#22c55e" stroke-width="1.2"/>
+                <line x1="112" y1="145" x2="112" y2="185"
+                      stroke="#22c55e" stroke-width="1.2" marker-end="url(#arrowWhite)"/>
+                <text x="150" y="138" fill="#22c55e" font-size="9">Yes</text>
+
+                <!-- Loop back -->
+                <line x1="112" y1="185" x2="112" y2="145" stroke="transparent"/>
+                <line x1="112" y1="145" x2="155" y2="145"
+                      stroke="#e5e7eb" stroke-width="1.2" marker-end="url(#arrowWhite)"/>
+
+                <!-- No -->
+                <line x1="275" y1="145" x2="335" y2="145"
+                      stroke="#f97316" stroke-width="1.2"/>
+                <line x1="335" y1="145" x2="335" y2="185"
+                      stroke="#f97316" stroke-width="1.2" marker-end="url(#arrowWhite)"/>
+                <text x="284" y="138" fill="#f97316" font-size="9">No</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- CHAPTER 4 -->
+    <div class="glass-card">
+        <h2 class="title-sub">Chapter 4 – Implementation Details</h2>
+        <p>
+            DeadlockLab is built as a multi-page web application:
+        </p>
+        <ul>
+            <li><b>index.html</b> – introductory page and feature overview.</li>
+            <li><b>simulator.html</b> – main deadlock simulation and visualization.</li>
+            <li><b>report.html</b> – this documentation with diagrams.</li>
+            <li><b>styles.css</b> – dark-neon theme, flexbox layout, animations.</li>
+            <li><b>simulator.js</b> – deadlock detection logic and Chart.js code.</li>
+        </ul>
+        <p>
+            All UI elements are constructed using pure CSS3 (no frameworks) with a
+            focus on flexbox layout, glowing hover effects and smooth transitions
+            to give a modern “OS dashboard” feel.
+        </p>
+    </div>
+
+    <!-- CHAPTER 5 -->
+    <div class="glass-card">
+        <h2 class="title-sub">Chapter 5 – Conclusion & Future Scope</h2>
+        <p>
+            The project demonstrates how theoretical concepts of deadlocks can be
+            visualized and experimented with using a browser-based simulator. It
+            helps students understand the relationship between Allocation,
+            Request and Available matrices, safe sequences and deadlock
+            conditions.
+        </p>
+        <p><b>Future enhancements:</b></p>
+        <ul>
+            <li>Animated graphical RAG (nodes and edges moving on canvas).</li>
+            <li>Support for wait-for graph representation.</li>
+            <li>Ability to export and import scenarios as JSON files.</li>
+            <li>Server-side storage of simulations and user profiles.</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        DeadlockLab – Operating Systems Project Report
+    </div>
+</div>
+
+</body>
+</html>
