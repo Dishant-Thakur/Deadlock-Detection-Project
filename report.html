@@ -29,7 +29,6 @@
 
 <div class="main-container">
 
-    <!-- TITLE / ABSTRACT -->
     <div class="glass-card">
         <h1 class="title-main">Automated Deadlock Detection Tool – DeadlockLab</h1>
         <p>
@@ -40,7 +39,6 @@
         </p>
     </div>
 
-    <!-- CHAPTER 1 -->
     <div class="glass-card">
         <h2 class="title-sub">Chapter 1 – Introduction</h2>
         <p>
@@ -63,7 +61,6 @@
         </ul>
     </div>
 
-    <!-- CHAPTER 2 -->
     <div class="glass-card">
         <h2 class="title-sub">Chapter 2 – Theoretical Background</h2>
         <p><b>2.1 Deadlock definition</b></p>
@@ -86,7 +83,6 @@
         </p>
     </div>
 
-    <!-- SVG: RAG DIAGRAM -->
     <div class="glass-card">
         <h2 class="title-sub">Resource Allocation Graph (RAG) Diagram</h2>
         <p>
@@ -95,14 +91,14 @@
         </p>
         <div class="chart-container" style="height:230px;">
             <svg width="100%" height="210" viewBox="0 0 420 210">
-                <!-- Processes -->
+               
                 <circle cx="80" cy="60" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
                 <text x="80" y="65" text-anchor="middle" fill="#e5e7eb" font-size="12">P0</text>
 
                 <circle cx="330" cy="60" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
                 <text x="330" y="65" text-anchor="middle" fill="#e5e7eb" font-size="12">P1</text>
 
-                <!-- Resources -->
+               
                 <rect x="190" y="35" width="30" height="30" rx="6"
                       fill="#0f172a" stroke="#facc15" stroke-width="2" />
                 <text x="205" y="54" text-anchor="middle" fill="#e5e7eb" font-size="11">R0</text>
@@ -111,7 +107,7 @@
                       fill="#0f172a" stroke="#facc15" stroke-width="2" />
                 <text x="205" y="139" text-anchor="middle" fill="#e5e7eb" font-size="11">R1</text>
 
-                <!-- Edges P0 -> R0 (request) -->
+    
                 <defs>
                     <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="5" refY="3"
                             orient="auto">
@@ -130,22 +126,20 @@
                 <line x1="98" y1="60" x2="190" y2="50"
                       stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)" />
 
-                <!-- R0 -> P1 (allocated) -->
                 <line x1="220" y1="50" x2="312" y2="60"
                       stroke="#facc15" stroke-width="1.5" marker-end="url(#arrowYellow)" />
-
-                <!-- P1 -> R1 (request) -->
+                    
                 <line x1="330" y1="78" x2="220" y2="120"
                       stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)" />
 
-                <!-- R1 -> P0 (allocated) -->
+              
                 <line x1="190" y1="135" x2="80"  y2="78"
                       stroke="#f97316" stroke-width="1.5" marker-end="url(#arrowRed)" />
             </svg>
         </div>
     </div>
 
-    <!-- CHAPTER 3 -->
+    
     <div class="glass-card">
         <h2 class="title-sub">Chapter 3 – Deadlock Detection Algorithm</h2>
         <p>
@@ -166,17 +160,16 @@
         </ol>
     </div>
 
-    <!-- SVG FLOWCHART -->
     <div class="glass-card">
         <h2 class="title-sub">Algorithm Flow Diagram</h2>
         <div class="chart-container" style="height:260px;">
             <svg width="100%" height="240" viewBox="0 0 430 240">
-                <!-- Start -->
+            
                 <rect x="165" y="10" width="100" height="30" rx="8"
                       fill="#0f172a" stroke="#22c55e" stroke-width="1.5" />
                 <text x="215" y="30" text-anchor="middle" fill="#e5e7eb" font-size="11">Start</text>
 
-                <!-- Init -->
+            
                 <rect x="90" y="55" width="250" height="40" rx="8"
                       fill="#0f172a" stroke="#38bdf8" stroke-width="1.5" />
                 <text x="215" y="78" text-anchor="middle" fill="#e5e7eb" font-size="11">
